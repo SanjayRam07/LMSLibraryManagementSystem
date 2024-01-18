@@ -10,6 +10,8 @@ import java.sql.*;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+import com.exmple.lmsfinalproject.props.props;
+
 public class HelloController implements Initializable {
     @FXML
     public Label bookLabel;
@@ -28,6 +30,9 @@ public class HelloController implements Initializable {
     private TextField studentPassword;
     @FXML
     private Button createAccountButton;
+    
+    Connection connection;
+
 
     public void onCreateAccountClick(ActionEvent event){
         String name = studentName.getText();
@@ -36,9 +41,14 @@ public class HelloController implements Initializable {
         int batch = Integer.parseInt(studentBatch.getText());
         String password = studentPassword.getText();
 
-        try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/lms", "root", "password");
+        try(Connection connection = DriverManager.getConnection(props.url, props.user, props.pwd);) {
             System.out.println("Connection established");
+        }
+        catch(Exception e) {
+        	System.out.println("SQL login failed");
+        }
+        
+        try {
             Statement statement = connection.createStatement();
             String query = "insert into memberinfo values('" + name + "'," + id + ",'" + department +"'," + batch +",'" + password +"');" ;
             System.out.println("insert into memberinfo values('" + name + "'," + id + ",'" + department +"'," + batch +",'" + password +"');" );
@@ -70,7 +80,7 @@ public class HelloController implements Initializable {
         // such as getting the password based on email or else
         // in this case we are getting data from librarian
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/lms", "root", "password");
+        	connection = DriverManager.getConnection(props.url, props.user, props.pwd);
             System.out.println("Connection established");
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM librarian WHERE email ='" + mail + "';");
@@ -91,6 +101,7 @@ public class HelloController implements Initializable {
         }
         catch (SQLException e){
             System.out.println("SQL exception occured");
+            e.printStackTrace();
         }
 
 
@@ -130,7 +141,7 @@ public class HelloController implements Initializable {
         int stdId = Integer.parseInt(studentIDfield.getText());
         String stdPass = passSTDfield.getText();
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/lms", "root", "password");
+        	connection = DriverManager.getConnection(props.url, props.user, props.pwd);
             System.out.println("Connection established");
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM memberinfo WHERE id ='" + stdId + "';");
@@ -152,6 +163,7 @@ public class HelloController implements Initializable {
         }
         catch (SQLException e){
             System.out.println("SQL exception occured");
+            e.printStackTrace();
         }
 
 
@@ -162,7 +174,7 @@ public class HelloController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/lms", "root", "password");
+        	connection = DriverManager.getConnection(props.url, props.user, props.pwd);
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select count(*) as id from bookmanagement;");
 
@@ -174,13 +186,14 @@ public class HelloController implements Initializable {
         }
         catch (SQLException e){
             System.out.println("SQL exception occured");
+            e.printStackTrace();
         }
 
 
 
         // this section is to show membercount upon starting
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/lms", "root", "password");
+        	connection = DriverManager.getConnection(props.url, props.user, props.pwd);
             System.out.println("Connection established");
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("select count(*) as id from memberinfo;");
@@ -195,6 +208,7 @@ public class HelloController implements Initializable {
         }
         catch (SQLException e){
             System.out.println("SQL exception occured");
+            e.printStackTrace();
         }
 
     }
@@ -212,7 +226,7 @@ public class HelloController implements Initializable {
         String mail = adminMailField.getText();
         String password = adminPassField.getText();
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/lms", "root", "password");
+        	connection = DriverManager.getConnection(props.url, props.user, props.pwd);
             System.out.println("Connection established");
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM admin WHERE email ='" + mail + "';");
@@ -232,6 +246,7 @@ public class HelloController implements Initializable {
         }
         catch (SQLException e){
             System.out.println("SQL exception occured");
+            e.printStackTrace();
         }
 
     }

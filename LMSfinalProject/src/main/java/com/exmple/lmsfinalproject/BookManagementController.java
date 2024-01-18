@@ -20,6 +20,8 @@ import java.sql.Statement;
 import java.util.Collection;
 import java.util.ResourceBundle;
 
+import com.exmple.lmsfinalproject.props.props;
+
 public class BookManagementController implements Initializable {
     @FXML
     private TextField bookidField;
@@ -81,7 +83,7 @@ public class BookManagementController implements Initializable {
 
     public void insertBook (Book book){
         try{
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/lms", "root", "password");
+        Connection connection = DriverManager.getConnection(props.url, props.user, props.pwd);
         System.out.println("Connection established");
         Statement statement = connection.createStatement();
         String query = "insert into bookmanagement values(" + book.getId() + ",'" + book.getName() + "','" + book.getAuthor() + "'," + book.getQuantity() + ",'" + book.getLocation() + "');" ;
@@ -89,6 +91,7 @@ public class BookManagementController implements Initializable {
         }
         catch (SQLException e){
             System.out.println("SQL exception occured");
+            e.printStackTrace();
         }
     }
 
@@ -109,7 +112,7 @@ public class BookManagementController implements Initializable {
 
     public void deleteBook (int id){
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/lms", "root", "password");
+            Connection connection = DriverManager.getConnection(props.url, props.user, props.pwd);
             System.out.println("Connection established");
             Statement statement = connection.createStatement();
             String query = "delete from bookmanagement where id =" + id +";";
@@ -120,6 +123,7 @@ public class BookManagementController implements Initializable {
         }
         catch (SQLException e){
             System.out.println("SQL exception occured");
+            e.printStackTrace();
         }
     }
     public void gotoDashboard(ActionEvent event){

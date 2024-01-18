@@ -6,8 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
+
+import com.exmple.lmsfinalproject.props.props;
 
 public class HelloApplication extends Application {
     private static Stage stage;
@@ -30,7 +33,8 @@ public class HelloApplication extends Application {
             e.printStackTrace();
         }
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+    	props.loadProps();
         launch();
     }
 }

@@ -17,6 +17,8 @@ import java.sql.*;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
+import com.exmple.lmsfinalproject.props.props;
 public class StudentController {
     @FXML
     private Button gotobutton;
@@ -39,7 +41,7 @@ public class StudentController {
 
        // to put data into lendreq
         try{
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/lms", "root", "password");
+            Connection connection = DriverManager.getConnection(props.url, props.user, props.pwd);
             System.out.println("Connection established");
             Statement statement = connection.createStatement();
             String query = "insert into lendreq values(" + studentID + "," + bookid + ");" ;
